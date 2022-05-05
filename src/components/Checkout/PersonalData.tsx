@@ -4,7 +4,10 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 
-export default function AddressForm() {
+export default function PersonalData({ data, setData, setStepName }: { data: any, setData: (newData: any) => void, setStepName: (newData: any) => void }) {
+  React.useEffect(() => {
+    setStepName('personalData');
+  }, [setStepName]);
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -13,6 +16,8 @@ export default function AddressForm() {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <TextField
+            value={data?.personalData?.name || ''}
+            onChange={ (e) => setData({ ...data, personalData: { ...data?.personalData, name: e.target.value } }) }
             required
             id="firstName"
             name="firstName"
@@ -24,6 +29,8 @@ export default function AddressForm() {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
+            value={data?.personalData?.cpf || ''}
+            onChange={ (e) => setData({ ...data, personalData: { ...data?.personalData, cpf: e.target.value } }) }
             required
             id="lastName"
             name="lastName"
@@ -35,28 +42,34 @@ export default function AddressForm() {
         </Grid>
         <Grid item xs={12}>
           <TextField
+            value={data?.personalData?.email || ''}
+            onChange={ (e) => setData({ ...data, personalData: { ...data?.personalData, email: e.target.value } }) }
             required
-            id="address1"
-            name="address1"
+            id="personalData1"
+            name="personalData1"
             label="E-mail"
             fullWidth
-            autoComplete="shipping address-line1"
+            autoComplete="shipping personalData-line1"
             variant="standard"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
+            value={data?.personalData?.phone1 || ''}
+            onChange={ (e) => setData({ ...data, personalData: { ...data?.personalData, phone1: e.target.value } }) }
             required
             id="city"
             name="city"
             label="Telefone principal"
             fullWidth
-            autoComplete="shipping address-level2"
+            autoComplete="shipping personalData-level2"
             variant="standard"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
+          value={data?.personalData?.phone2 || ''}
+          onChange={ (e) => setData({ ...data, personalData: { ...data?.personalData, phone2: e.target.value } }) }
             id="state"
             name="state"
             label="Outro telefone"
@@ -66,6 +79,8 @@ export default function AddressForm() {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
+          value={data?.personalData?.occupation || ''}
+          onChange={ (e) => setData({ ...data, personalData: { ...data?.personalData, occupation: e.target.value } }) }
             required
             id="zip"
             name="zip"
@@ -77,6 +92,8 @@ export default function AddressForm() {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
+          value={data?.personalData?.education || ''}
+          onChange={ (e) => setData({ ...data, personalData: { ...data?.personalData, education: e.target.value } }) }
             required
             id="country"
             name="country"

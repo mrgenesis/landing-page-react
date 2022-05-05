@@ -11,7 +11,7 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AddressForm from './AddressForm';
-import DataCustomer from './DataCustomer';
+import PersonalData from './PersonalData';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 
@@ -30,30 +30,34 @@ function Copyright() {
 
 const steps = ['Endereço', 'Pessoal', 'Faturamento', 'Concluir'];
 
-function getStepContent(step: number) {
+function getStepContent(step: number, { data, setData, setStepName }: { data: any, setData: (newData: any) => void, setStepName: (newData: any) => void }) {
   switch (step) {
     case 0:
-      return <AddressForm />;
-    case 1:
-       return <DataCustomer />;
-    case 2:
-      return <PaymentForm />;
-    case 3:
-      return <Review />;
-    default:
-      throw new Error('Unknown step');
-  }
-}
-
-const theme = createTheme();
-
-export default function Checkout() {
+      return <AddressForm data={data} setData={setData} setStepName={setStepName} />;
+      case 1:
+        return <PersonalData data={data} setData={setData} setStepName={setStepName} />;
+        case 2:
+      return <PaymentForm data={data} setData={setData} setStepName={setStepName} />;
+      case 3:
+        return <Review data={data} />;
+        default:
+          throw new Error('Unknown step');
+        }
+      }
+      
+      const theme = createTheme();
+      
+      export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [data, setData] = React.useState({});
+  const [stepName, setStepName] = React.useState('');
+  
+  console.log('O nome da propriedade que será atualizada:', stepName)
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };
-
+  
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
@@ -85,7 +89,7 @@ export default function Checkout() {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {getStepContent(activeStep)}
+                {getStepContent(activeStep, { data, setData, setStepName })}
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                   {activeStep !== 0 && (
                     <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>

@@ -6,7 +6,6 @@ import Footer from '../../components/Footer';
 import Content from '../../components/Content';
 import PricingContent from '../../components/Pricing';
 import FAQ from '../../components/FAQ';
-import { Divider } from '@mui/material';
 
 
 export default function NetClaroHomePage() {

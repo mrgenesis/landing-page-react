@@ -17,17 +17,12 @@ const products = [
     price: '29.00',
   },
 ];
-const addresses = ['1 MUI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
-const payments = [
-  { name: 'Vencimento', detail: '10' },
-  { name: 'Método de pagamento', detail: 'Boleto' },
-];
 
-export default function Review() {
+export default function Review({ data }: { data: any}) {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Dados do pedido
+        Produto selecionado
       </Typography>
       <List disablePadding>
         {products.map((product) => (
@@ -48,24 +43,26 @@ export default function Review() {
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Endereço de instalação
           </Typography>
-          <Typography gutterBottom>John Smith</Typography>
-          <Typography gutterBottom>{addresses.join(', ')}</Typography>
+          <Typography gutterBottom>{data.address.streetName}, {data.address.streetNumber}</Typography>
+          <Typography gutterBottom>{data.address.city} - {data.address.state}</Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Dados da fatura
           </Typography>
           <Grid container>
-            {payments.map((payment) => (
-              <React.Fragment key={payment.name}>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.name}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.detail}</Typography>
-                </Grid>
-              </React.Fragment>
-            ))}
+          <Grid item xs={6}>
+              <Typography gutterBottom>Forma de pagamento</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography gutterBottom>Boleto</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography gutterBottom>Vencimento</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography gutterBottom>{data.invoice.dueDate}</Typography>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
