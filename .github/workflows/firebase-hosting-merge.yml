@@ -16,5 +16,6 @@ jobs:
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_NET_CLARO }}'
+          REACT_APP_TEST: '${{ secrets.REACT_APP_TEST }}'
           channelId: live
           projectId: net-claro
