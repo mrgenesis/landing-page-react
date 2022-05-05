@@ -11,11 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: yarn install && yarn build
+      - run: |
+        echo REACT_APP_TEST=${{ secrets.REACT_APP_TEST }} >> .env.production.local
+        echo '\n\n\nDados do arquivo .env.production.local'
+        cat .env.production.local
+        echo -e "Fim do arquivo\n\n\n"
+        yarn install
+        yarn build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_NET_CLARO }}'
-          REACT_APP_TEST: '${{ secrets.REACT_APP_TEST }}'
           channelId: live
           projectId: net-claro
