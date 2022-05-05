@@ -62,7 +62,7 @@ const PricingContent: React.FC = () => {
   const navigate = useNavigate();
   return (
     <React.Fragment>
-      <Grid container spacing={5} alignItems="flex-end">
+      <Grid container spacing={5} alignItems="flex-end" sx={{ mb: 7 }}>
           {tiers.map((tier) => (
             // Enterprise card is full width at sm breakpoint
             <Grid
