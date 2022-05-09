@@ -1,33 +1,18 @@
 import * as React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AddressForm from './AddressForm';
 import PersonalData from './PersonalData';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 import { requestCollectionReducer } from '../../services/reducers/db/request-collection';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+
 
 const steps = ['Endereço', 'Pessoal', 'Faturamento', 'Concluir'];
 
@@ -41,21 +26,23 @@ function getStepContent(step: number, { data, setData, setStepName }: { data: an
       return <PaymentForm data={data} setData={setData} setStepName={setStepName} />;
       case 3:
         return <Review data={data} setStepName={setStepName} />;
-        default:
-          throw new Error('Unknown step');
-        }
-      }
+      default:
+        throw new Error('Unknown step');
+  }
+}
       
-      const theme = createTheme();
-      
-      export default function Checkout() {
+export default function Checkout() {
   const [done, setDone] = React.useState(0);
+  const [stepperOrientation, setStepperOrientation] = React.useState<any>({ orientation: 'horizontal', alternativeLabel: true });
   const [activeStep, setActiveStep] = React.useState(0);
   const [requestNumber, setRequestNumber] = React.useState<number | undefined>();
   const [data, setData] = React.useState<any>({});
   const [stepName, setStepName] = React.useState('');
   const [, requestCollectionDispatch] = React.useReducer(requestCollectionReducer, {});
   React.useEffect(() => {
+    if(window.innerWidth < 390) {
+      setStepperOrientation({ orientation: 'vertical' });
+    }
     requestCollectionDispatch({ type: 'CREATE' });
     const RN = Number(localStorage.getItem('requestNumber'));
     setRequestNumber(RN);
@@ -70,16 +57,13 @@ function getStepContent(step: number, { data, setData, setStepName }: { data: an
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
-
+  
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container component="main" maxWidth="sm" sx={{ mb: 4, mt: 10 }}>
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3, mt: 10 } }}>
           <Typography component="h1" variant="h4" align="center">
             Coleta de dados
           </Typography>
-          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+          <Stepper activeStep={activeStep} { ...stepperOrientation } sx={{ pt: 3, pb: 5, }}>
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
@@ -125,8 +109,5 @@ function getStepContent(step: number, { data, setData, setStepName }: { data: an
             )}
           </React.Fragment>
         </Paper>
-        <Copyright />
-      </Container>
-    </ThemeProvider>
   );
 }

@@ -1,14 +1,14 @@
 
 
 import { Routes, Route } from "react-router-dom";
-import Checkout from "../components/Checkout";
+import CheckoutPage from "./ChackoutPage";
 import NetClaroHomePage from "./NetClaroHomePage";
 
 function RootPage() {
   return (
     <Routes>
       <Route path="/" element={<NetClaroHomePage />} />
-      <Route path="/cadastro" element={<Checkout /> } />
+      <Route path="/cadastro" element={<CheckoutPage /> } />
     </Routes>
   );
 }
