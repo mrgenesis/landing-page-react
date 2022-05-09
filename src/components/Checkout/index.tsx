@@ -14,6 +14,7 @@ import AddressForm from './AddressForm';
 import PersonalData from './PersonalData';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
+import { requestCollectionReducer } from '../../services/reducers/db/request-collection';
 
 function Copyright() {
   return (
@@ -39,7 +40,7 @@ function getStepContent(step: number, { data, setData, setStepName }: { data: an
         case 2:
       return <PaymentForm data={data} setData={setData} setStepName={setStepName} />;
       case 3:
-        return <Review data={data} />;
+        return <Review data={data} setStepName={setStepName} />;
         default:
           throw new Error('Unknown step');
         }
@@ -48,13 +49,21 @@ function getStepContent(step: number, { data, setData, setStepName }: { data: an
       const theme = createTheme();
       
       export default function Checkout() {
+  const [done, setDone] = React.useState(0);
   const [activeStep, setActiveStep] = React.useState(0);
-  const [data, setData] = React.useState({});
+  const [requestNumber, setRequestNumber] = React.useState<number | undefined>();
+  const [data, setData] = React.useState<any>({});
   const [stepName, setStepName] = React.useState('');
+  const [, requestCollectionDispatch] = React.useReducer(requestCollectionReducer, {});
+  React.useEffect(() => {
+    requestCollectionDispatch({ type: 'CREATE' });
+    const RN = Number(localStorage.getItem('requestNumber'));
+    setRequestNumber(RN);
+  }, []);
   
-  console.log('O nome da propriedade que será atualizada:', stepName)
-
   const handleNext = () => {
+    requestCollectionDispatch({ type: 'SET_STEP', payload: stepName });
+    requestCollectionDispatch({ type: 'UPDATE', payload: { [stepName]: data[stepName] || null } });
     setActiveStep(activeStep + 1);
   };
   
@@ -78,16 +87,24 @@ function getStepContent(step: number, { data, setData, setStepName }: { data: an
             ))}
           </Stepper>
           <React.Fragment>
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                <Typography variant="h5" gutterBottom>
-                  Agradecemos pelo seu pedido.
-                </Typography>
-                <Typography variant="subtitle1">
-                  Seu número de pedido é #2001539. Os dados serão analisados e em breve entremos em contato para agendarmos a data da instalação.
-                </Typography>
-              </React.Fragment>
-            ) : (
+            {(activeStep === steps.length) 
+            ? (function() {
+              if(!done) { // TODO escrever esse código de uma maneira mais elegante
+                setDone(1);
+                requestCollectionDispatch({ type: 'DONE' });
+              }
+              return (
+                <React.Fragment>
+                  <Typography variant="h5" gutterBottom>
+                    Agradecemos pelo seu pedido.
+                  </Typography>
+                  <Typography variant="subtitle1">
+                    Seu número de pedido é #{requestNumber}. Os dados serão analisados e em breve entremos em contato para agendarmos a data da instalação.
+                  </Typography>
+                </React.Fragment>
+              );
+            }()) 
+            : (
               <React.Fragment>
                 {getStepContent(activeStep, { data, setData, setStepName })}
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -101,7 +118,7 @@ function getStepContent(step: number, { data, setData, setStepName }: { data: an
                     onClick={handleNext}
                     sx={{ mt: 3, ml: 1 }}
                   >
-                    {activeStep === steps.length - 1 ? 'Finalizar' : 'Próximo'}
+                    {activeStep === steps.length - 1 ? 'Concluir' : 'Próximo'}
                   </Button>
                 </Box>
               </React.Fragment>

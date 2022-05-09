@@ -18,7 +18,10 @@ const products = [
   },
 ];
 
-export default function Review({ data }: { data: any}) {
+export default function Review({ data, setStepName }: { data: any, setStepName: (newData: any) => void }) {
+  React.useEffect(() => {
+    setStepName('done');
+  }, [setStepName]);
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
