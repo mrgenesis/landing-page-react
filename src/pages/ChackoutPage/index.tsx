@@ -1,11 +1,14 @@
 import Checkout from "../../components/Checkout";
 import WithAndWithoutTopBanner from "../../components/Layouts/WithAndWithoutTopBanner";
+import { CheckoutStorage } from "./CheckoutStorage";
 
 const CheckoutPage = () => {
 
   return (
     <WithAndWithoutTopBanner> 
-      <Checkout />
+      <CheckoutStorage>
+        <Checkout />
+      </CheckoutStorage>
     </WithAndWithoutTopBanner>
   );
 }

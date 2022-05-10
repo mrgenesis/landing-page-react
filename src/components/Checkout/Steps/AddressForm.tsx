@@ -2,11 +2,20 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import { useSearchParams } from 'react-router-dom';
+import { checkoutContext } from '../checkoutContext';
 
-export default function AddressForm({ data, setData, setStepName }: { data: any, setData: (newData: any) => void, setStepName: (newData: any) => void }) {
+export default function AddressForm({ handleInput }: { handleInput: (key: string, value: any) => void }) {
+  const [stateCheckout, dispachCheckout] = React.useContext(checkoutContext);
+  const [currentStep] = React.useState('address');
+  
+  const [params] = useSearchParams();
+  const [cidade] = React.useState(params.get('cidade'));
   React.useEffect(() => {
-    setStepName('address');
-  }, [setStepName]);
+    dispachCheckout({ type: 'SET_STEP', payload: { step: currentStep }});
+    dispachCheckout({ type: 'UPDATE_FIELD', payload: { 'city': cidade || 'Campo Grande' }});
+    dispachCheckout({ type: 'UPDATE_FIELD', payload: { 'state': cidade || 'MS' }});    
+  }, [currentStep, cidade, dispachCheckout]);
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -15,20 +24,21 @@ export default function AddressForm({ data, setData, setStepName }: { data: any,
       <Grid container spacing={3}>
         <Grid item xs={12} sm={3}>
           <TextField
-            value={data?.address?.zipCode || ''}
-            onChange={ (e) => setData({ ...data, address: { ...data?.address, zipCode: e.target.value } }) }
+            value={stateCheckout?.[currentStep]?.zipCode?.replace(/\D/g, '') || ''}
+            onChange={e => handleInput('zipCode', e.target.value.replace(/\D/g, ''))}
             id="zipCode"
             name="zipCode"
             label="CEP"
             fullWidth
-            autoComplete="given-name"
+            autoComplete="postal-code"
             variant="standard"
-          />
+            inputProps={{ maxLength: 8 }}
+            />
         </Grid>
         <Grid item xs={6}>
           <TextField
-            value={data?.address?.streetName || ''}
-            onChange={ (e) => setData({ ...data, address: { ...data?.address, streetName: e.target.value } }) }
+            value={stateCheckout?.[currentStep]?.streetName || ''}
+            onChange={e => handleInput('streetName', e.target.value)}
             required
             id="address1"
             name="address1"
@@ -40,20 +50,22 @@ export default function AddressForm({ data, setData, setStepName }: { data: any,
         </Grid>
         <Grid item xs={2}>
           <TextField
-            value={data?.address?.streetNumber || ''}
-            onChange={ (e) => setData({ ...data, address: { ...data?.address, streetNumber: e.target.value } }) }
+            value={stateCheckout?.[currentStep]?.streetNumber || ''}
+            onChange={ (e) => handleInput('streetNumber', e.target.value) }
             id="address2"
             name="address2"
             label="Número"
             fullWidth
             autoComplete="shipping address-line2"
             variant="standard"
+            type={'number'}
+            inputProps={{ maxLength: 5 }}
           />
         </Grid>
         <Grid item xs={12} sm={5}>
           <TextField
-            value={data?.address?.neighborhood || ''}
-            onChange={ (e) => setData({ ...data, address: { ...data?.address, neighborhood: e.target.value } }) }
+            value={stateCheckout?.[currentStep]?.neighborhood || ''}
+            onChange={ (e) => handleInput('neighborhood', e.target.value) }
             required
             id="zip"
             name="zip"
@@ -65,8 +77,8 @@ export default function AddressForm({ data, setData, setStepName }: { data: any,
         </Grid>
         <Grid item xs={12} sm={5}>
           <TextField
-            value={data?.address?.city || ''}
-            onChange={ (e) => setData({ ...data, address: { ...data?.address, city: e.target.value } }) }
+            disabled
+            value={stateCheckout?.[currentStep]?.city || ''}
             required
             id="city"
             name="city"
@@ -78,8 +90,8 @@ export default function AddressForm({ data, setData, setStepName }: { data: any,
         </Grid>
         <Grid item xs={12} sm={2}>
           <TextField
-            value={data?.address?.state || ''}
-            onChange={ (e) => setData({ ...data, address: { ...data?.address, state: e.target.value } }) }
+            disabled
+            value={stateCheckout?.[currentStep]?.state || ''}
             id="state"
             name="state"
             label="Estado"

@@ -10,6 +10,9 @@ export class Generic<T> {
   constructor(private readonly collectionName: string) {
     this.collectionReference = collection(db, collectionName);
   }
+  get docId() {
+    return this.documentReference.id;
+  }
   async create(data: T) {
     this.documentReference = await addDoc(this.collectionReference, data);
   }

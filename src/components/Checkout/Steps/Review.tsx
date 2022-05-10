@@ -4,6 +4,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
+import { checkoutContext } from '../checkoutContext';
 
 const products = [
   {
@@ -18,10 +19,13 @@ const products = [
   },
 ];
 
-export default function Review({ data, setStepName }: { data: any, setStepName: (newData: any) => void }) {
+export default function Review() {
+  const [stateCheckout, dispachCheckout] = React.useContext(checkoutContext);
+  
   React.useEffect(() => {
-    setStepName('done');
-  }, [setStepName]);
+    dispachCheckout({ type: 'SET_STEP', payload: { step: 'done' }});   
+  }, [dispachCheckout]);
+  
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -46,8 +50,8 @@ export default function Review({ data, setStepName }: { data: any, setStepName: 
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Endereço de instalação
           </Typography>
-          <Typography gutterBottom>{data.address.streetName}, {data.address.streetNumber}</Typography>
-          <Typography gutterBottom>{data.address.city} - {data.address.state}</Typography>
+          <Typography gutterBottom>{stateCheckout.address.streetName}, {stateCheckout.address.streetNumber}</Typography>
+          <Typography gutterBottom>{stateCheckout.address.city} - {stateCheckout.address.state}</Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
@@ -64,7 +68,7 @@ export default function Review({ data, setStepName }: { data: any, setStepName: 
               <Typography gutterBottom>Vencimento</Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography gutterBottom>{data.invoice.dueDate}</Typography>
+              <Typography gutterBottom>{stateCheckout.invoice.dueDate}</Typography>
             </Grid>
           </Grid>
         </Grid>

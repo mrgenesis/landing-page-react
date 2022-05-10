@@ -3,11 +3,16 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
+import { checkoutContext } from '../checkoutContext';
 
-export default function PersonalData({ data, setData, setStepName }: { data: any, setData: (newData: any) => void, setStepName: (newData: any) => void }) {
+export default function PersonalData({ handleInput }: { handleInput: (key: string, value: any) => void }) {
+  const [stateCheckout, dispachCheckout] = React.useContext(checkoutContext);
+  const [currentStep] = React.useState('personalData');
+  
   React.useEffect(() => {
-    setStepName('personalData');
-  }, [setStepName]);
+    dispachCheckout({ type: 'SET_STEP', payload: { step: currentStep }});   
+  }, [currentStep, dispachCheckout]);
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -16,8 +21,8 @@ export default function PersonalData({ data, setData, setStepName }: { data: any
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <TextField
-            value={data?.personalData?.name || ''}
-            onChange={ (e) => setData({ ...data, personalData: { ...data?.personalData, name: e.target.value } }) }
+            value={stateCheckout?.[currentStep]?.name || ''}
+            onChange={ (e) => handleInput('name', e.target.value) }
             required
             id="firstName"
             name="firstName"
@@ -29,8 +34,8 @@ export default function PersonalData({ data, setData, setStepName }: { data: any
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            value={data?.personalData?.cpf || ''}
-            onChange={ (e) => setData({ ...data, personalData: { ...data?.personalData, cpf: e.target.value } }) }
+            value={stateCheckout?.personalData?.cpf || ''}
+            onChange={ (e) => handleInput('cpf', e.target.value)}
             required
             id="lastName"
             name="lastName"
@@ -42,8 +47,8 @@ export default function PersonalData({ data, setData, setStepName }: { data: any
         </Grid>
         <Grid item xs={12}>
           <TextField
-            value={data?.personalData?.email || ''}
-            onChange={ (e) => setData({ ...data, personalData: { ...data?.personalData, email: e.target.value } }) }
+            value={stateCheckout?.personalData?.email || ''}
+            onChange={ (e) => handleInput('email', e.target.value) }
             required
             id="personalData1"
             name="personalData1"
@@ -55,8 +60,8 @@ export default function PersonalData({ data, setData, setStepName }: { data: any
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            value={data?.personalData?.phone1 || ''}
-            onChange={ (e) => setData({ ...data, personalData: { ...data?.personalData, phone1: e.target.value } }) }
+            value={stateCheckout?.personalData?.phone1 || ''}
+            onChange={ (e) => handleInput('phone1', e.target.value) }
             required
             id="city"
             name="city"
@@ -68,8 +73,8 @@ export default function PersonalData({ data, setData, setStepName }: { data: any
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-          value={data?.personalData?.phone2 || ''}
-          onChange={ (e) => setData({ ...data, personalData: { ...data?.personalData, phone2: e.target.value } }) }
+          value={stateCheckout?.personalData?.phone2 || ''}
+          onChange={ (e) => handleInput('phone2', e.target.value) }
             id="state"
             name="state"
             label="Outro telefone"
@@ -79,8 +84,8 @@ export default function PersonalData({ data, setData, setStepName }: { data: any
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-          value={data?.personalData?.occupation || ''}
-          onChange={ (e) => setData({ ...data, personalData: { ...data?.personalData, occupation: e.target.value } }) }
+          value={stateCheckout?.personalData?.occupation || ''}
+          onChange={ (e) => handleInput('occupation', e.target.value) }
             required
             id="zip"
             name="zip"
@@ -92,8 +97,8 @@ export default function PersonalData({ data, setData, setStepName }: { data: any
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-          value={data?.personalData?.education || ''}
-          onChange={ (e) => setData({ ...data, personalData: { ...data?.personalData, education: e.target.value } }) }
+          value={stateCheckout?.personalData?.education || ''}
+          onChange={ (e) => handleInput('education', e.target.value) }
             required
             id="country"
             name="country"
