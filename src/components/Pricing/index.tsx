@@ -16,60 +16,25 @@ import claroVideoImg from './claro-video.svg';
 import discoveryPlusImg from './discoveryplus.svg';
 import nowImg from './now.svg';
 import { Divider } from '@mui/material';
+import { tiers } from '../../config';
 
-const tiers = [
-  {
-    title: '250 MEGA',
-    price: '99',
-    description: [
-      '10 users included',
-      '2 GB of storage',
-      'Help center access',
-      'Email support',
-    ],
-    buttonText: 'Assinar',
-    buttonVariant: 'outlined',
-  },
-  {
-    title: '350 MEGA',
-    subheader: 'Mais popular',
-    price: '129',
-    description: [
-      '20 users included',
-      '10 GB of storage',
-      'Help center access',
-      'Priority email support',
-    ],
-    buttonText: 'Assinar',
-    buttonVariant: 'contained',
-  },
-  {
-    title: '500 MEGA',
-    price: '139',
-    description: [
-      '50 users included',
-      '30 GB of storage',
-      'Help center access',
-      'Phone & email support',
-    ],
-    buttonText: 'Assinar',
-    buttonVariant: 'outlined',
-  },
-];
 const Bd = () => <strong>Com o Claro Box</strong>
 
 const PricingContent: React.FC = () => {
   const navigate = useNavigate();
+  const selectorPlan = (plano_id: number | string) => {
+    localStorage.setItem('plan_id', String(plano_id));
+    navigate(`/cadastro`);
+  }
   return (
     <React.Fragment>
       <Grid container spacing={5} alignItems="flex-end" sx={{ mb: 7 }}>
-          {tiers.map((tier) => (
-            // Enterprise card is full width at sm breakpoint
+          {tiers.map((tier, index) => (
             <Grid
               item
               key={tier.title}
               xs={12}
-              sm={tier.title === 'Enterprise' ? 12 : 6}
+              sm={tier.title === '500 MEGA + TV Top' ? 12 : 6}
               md={4}
             >
               <Card>
@@ -77,7 +42,7 @@ const PricingContent: React.FC = () => {
                   title={tier.title}
                   subheader={tier.subheader}
                   titleTypographyProps={{ align: 'center' }}
-                  action={tier.title === '350 MEGA' ? <StarIcon /> : null}
+                  action={tier.title === '500 MEGA + TV Top' ? <StarIcon /> : null}
                   subheaderTypographyProps={{
                     align: 'center',
                   }}
@@ -140,12 +105,12 @@ const PricingContent: React.FC = () => {
                       ,99/m
                     </Typography>
                   </Box>
-                  <Typography component={'h2'} variant='body1'>{tier.title === '350 MEGA' ? <Bd /> : 'Valor individual'}</Typography>
+                  <Typography component={'h2'} variant='body1'>{tier.title === '500 MEGA + TV Top' ? <Bd /> : 'Valor individual'}</Typography>
 
                 </CardContent>
                 <CardActions>
                   <Button
-                  onClick={() => navigate('/cadastro')}
+                  onClick={() => selectorPlan(index)}
                     fullWidth
                     sx={{ 
                       borderColor: '#F2B441',

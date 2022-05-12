@@ -5,23 +5,15 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 import { checkoutContext } from '../checkoutContext';
+import { tiers } from '../../../config';
 
-const products = [
-  {
-    name: '350 MEGA',
-    desc: 'Internet 350 download/ 30 upload',
-    price: '99.99',
-  },
-  {
-    name: 'Claro Box',
-    desc: 'Grade do Top HD',
-    price: '29.00',
-  },
-];
 
 export default function Review() {
   const [stateCheckout, dispachCheckout] = React.useContext(checkoutContext);
+  const [planoId] = React.useState(Number(localStorage.getItem('plan_id')));
+  const [plan] = React.useState(tiers[planoId]);
   
+
   React.useEffect(() => {
     dispachCheckout({ type: 'SET_STEP', payload: { step: 'done' }});  
     dispachCheckout({ type: 'VALIDATE', payload: stateCheckout?.validateAll() }); // eslint-disable-next-line
@@ -33,16 +25,14 @@ export default function Review() {
         Produto selecionado
       </Typography>
       <List disablePadding>
-        {products.map((product) => (
-          <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
-            <ListItemText primary={product.name} secondary={product.desc} />
-            <Typography variant="body2">R${Number(product.price).toLocaleString('pt-br')}</Typography>
-          </ListItem>
-        ))}
+        <ListItem key={plan.title} sx={{ py: 1, px: 0 }}>
+          <ListItemText primary={plan.title} secondary={plan.description} />
+          <Typography variant="body2">R${Number(plan.price).toLocaleString('pt-br')}</Typography>
+        </ListItem>
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            R$129,99 por mês
+            {plan.price},99 por mês
           </Typography>
         </ListItem>
       </List>

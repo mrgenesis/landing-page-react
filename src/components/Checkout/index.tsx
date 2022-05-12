@@ -14,7 +14,7 @@ const stepsLabels = ['Endereço', 'Pessoal', 'Faturamento', 'Resumo', 'Concluíd
 export default function Checkout() {
   const [stateCheckout] = React.useContext(checkoutContext);
   const [stepperOrientation, setStepperOrientation] = React.useState<any>({ orientation: 'horizontal', alternativeLabel: true });
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState(3);
   const [, requestCollectionDispatch] = React.useReducer(requestCollectionReducer, {});
   React.useEffect(() => {
     if(window.innerWidth < 390) {

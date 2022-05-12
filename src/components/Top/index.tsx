@@ -22,6 +22,11 @@ export default function Top() {
     setTopImg(getTopImage(viewPortSize));
   }, [viewPortSize]);
   const navigate = useNavigate();
+  const selectorPlan = (plano_id: number | string) => {
+    localStorage.setItem('plan_id', String(plano_id));
+    navigate(`/cadastro`);
+  }
+ 
   return (
     <Box  
       sx={{ 
@@ -34,7 +39,7 @@ export default function Top() {
       component="header"
     >
       <Button 
-      onClick={() => navigate('/cadastro')}
+      onClick={() => selectorPlan(0)}
       sx={{ 
         margin: '0 auto',
         position: 'absolute',
