@@ -17,8 +17,8 @@ export default function AddressForm({ handleInput, handleFocus }: { handleInput:
     handleFocus(AdressPropertiesNames.city);
     dispachCheckout({ type: 'UPDATE_FIELD', payload: { [AdressPropertiesNames.city]: cidade || 'Campo Grande' }});
     handleFocus(AdressPropertiesNames.state);
-    dispachCheckout({ type: 'UPDATE_FIELD', payload: { [AdressPropertiesNames.state]: cidade || 'MS' }});  // eslint-disable-next-line  
-    handleFocus(AdressPropertiesNames.zipCode);
+    dispachCheckout({ type: 'UPDATE_FIELD', payload: { [AdressPropertiesNames.state]: cidade || 'MS' }});    
+    handleFocus(AdressPropertiesNames.zipCode); // eslint-disable-next-line
   }, []);
   
   return (

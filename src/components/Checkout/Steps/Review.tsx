@@ -24,8 +24,8 @@ export default function Review() {
   
   React.useEffect(() => {
     dispachCheckout({ type: 'SET_STEP', payload: { step: 'done' }});  
-    dispachCheckout({ type: 'VALIDATE', payload: stateCheckout?.validateAll() });
-  }, [dispachCheckout]);
+    dispachCheckout({ type: 'VALIDATE', payload: stateCheckout?.validateAll() }); // eslint-disable-next-line
+  }, []);
   
   return (
     <React.Fragment>
