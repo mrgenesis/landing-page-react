@@ -23,7 +23,8 @@ export default function Review() {
   const [stateCheckout, dispachCheckout] = React.useContext(checkoutContext);
   
   React.useEffect(() => {
-    dispachCheckout({ type: 'SET_STEP', payload: { step: 'done' }});   
+    dispachCheckout({ type: 'SET_STEP', payload: { step: 'done' }});  
+    dispachCheckout({ type: 'VALIDATE', payload: stateCheckout?.validateAll() });
   }, [dispachCheckout]);
   
   return (
@@ -50,8 +51,8 @@ export default function Review() {
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Endereço de instalação
           </Typography>
-          <Typography gutterBottom>{stateCheckout.address.streetName}, {stateCheckout.address.streetNumber}</Typography>
-          <Typography gutterBottom>{stateCheckout.address.city} - {stateCheckout.address.state}</Typography>
+          <Typography gutterBottom>{stateCheckout.data.address.streetName}, {stateCheckout.data.address.streetNumber}</Typography>
+          <Typography gutterBottom>{stateCheckout.data.address.city} - {stateCheckout.data.address.state}</Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
@@ -68,7 +69,7 @@ export default function Review() {
               <Typography gutterBottom>Vencimento</Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography gutterBottom>{stateCheckout.invoice.dueDate}</Typography>
+              <Typography gutterBottom>{stateCheckout.data.invoice.dueDate}</Typography>
             </Grid>
           </Grid>
         </Grid>

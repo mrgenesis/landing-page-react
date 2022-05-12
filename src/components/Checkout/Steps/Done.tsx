@@ -2,11 +2,12 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
 
-type Props = {
-  requestNumber: number;
-}
+type Props = {}
 
-const Done: React.FC<Props> = ({ requestNumber }: Props) => {
+const Done: React.FC<Props> = () => {
+  const requestNumber = Number(localStorage.getItem('requestNumber'));
+  localStorage.removeItem('requestNumber');
+  localStorage.removeItem('docId');
   return (
     <React.Fragment>
       <Typography variant="h5" gutterBottom>
