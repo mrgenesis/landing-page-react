@@ -11,7 +11,7 @@ type Props = {
 
 export const CheckoutStorage: React.FC<Props> = ({ children }) => {
   const [initState] = useContext(checkoutContext);
-  const [state, dispatch] = useReducer(checkoutReducer, initState);
+  const [state, dispatch] = useReducer<React.Reducer<any, any>>(checkoutReducer, initState);
   return (
     <checkoutContext.Provider value={[state, dispatch]}>
       { children }
