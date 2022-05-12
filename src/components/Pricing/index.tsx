@@ -34,7 +34,7 @@ const PricingContent: React.FC = () => {
               item
               key={tier.title}
               xs={12}
-              sm={tier.title === '500 MEGA + TV Top' ? 12 : 6}
+              sm={tier.title === '500 MEGA + TV Top' ? 6 : 6}
               md={4}
             >
               <Card>

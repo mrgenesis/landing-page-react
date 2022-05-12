@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import PricingContent from '../../components/Pricing';
 import FAQ from '../../components/FAQ';
 import WithAndWithoutTopBanner from "../../components/Layouts/WithAndWithoutTopBanner";
+import WhatsappContact from '../../components/WhatsappContact';
 
 export default function NetClaroHomePage() {
   return (
@@ -13,6 +14,7 @@ export default function NetClaroHomePage() {
         <br />
         <PricingContent />
         <FAQ />
+        <WhatsappContact />
       </>
     </WithAndWithoutTopBanner>
   );
