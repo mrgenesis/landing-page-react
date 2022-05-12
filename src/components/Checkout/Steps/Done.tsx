@@ -8,6 +8,8 @@ const Done: React.FC<Props> = () => {
   const requestNumber = Number(localStorage.getItem('requestNumber'));
   localStorage.removeItem('requestNumber');
   localStorage.removeItem('docId');
+  localStorage.removeItem('uploaded');
+  localStorage.removeItem('plan_id');
   return (
     <React.Fragment>
       <Typography variant="h5" gutterBottom>

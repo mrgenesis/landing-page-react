@@ -5,13 +5,32 @@ import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import { checkoutContext } from '../checkoutContext';
 import { PersonalDataPropertiesNames, Steps } from '../interfaces';
+import { storageReference } from '../../../services/firebase';
+import { uploadBytes } from 'firebase/storage';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import FileDownloadDoneIcon from '@mui/icons-material/FileDownloadDone';
 
 export default function PersonalData({ handleInput, handleFocus }: { handleInput: (key: string, value: any) => void, handleFocus: (filedName: string) => void }) {
   const [stateCheckout, dispachCheckout] = React.useContext(checkoutContext);
+  const [uploaded, setUploaded] = React.useState(Boolean(localStorage.getItem('uploaded')));
   
   React.useEffect(() => {
     dispachCheckout({ type: 'SET_STEP', payload: { step: Steps.personalData }});   
-  }, [dispachCheckout]);
+  }, []);
+
+  const handleFile = (e: any) => {
+    const file = e.target.files[0];
+    console.log(e.target.files)
+    if (file) {
+      uploadBytes(storageReference, file)
+      .then(() => {
+        localStorage.setItem('uploaded', 'ok');
+        setUploaded(true);
+      })
+      .catch(e => console.log('error', e));
+    }
+
+  }
 
   return (
     <React.Fragment>
@@ -138,10 +157,10 @@ export default function PersonalData({ handleInput, handleFocus }: { handleInput
           />
         </Grid>
         <Grid item xs={12} sm={12}>          
-          <Button variant='contained' fullWidth component="label" color="inherit">
+          <Button variant='contained' fullWidth component="label" startIcon={(uploaded) ? <FileDownloadDoneIcon /> : <FileUploadIcon />} color={(uploaded) ? 'inherit' : "primary"}>
             {" "}
-            Documento de identificação com foto
-            <input type="file" hidden onChange={(e) => console.log(e.target.value)} />
+            {(uploaded) ? `Documento enviado` : `envie a cópia do RG ou CNH`}
+            <input type="file" hidden accept='image/*'  onChange={handleFile} />
           </Button>
         </Grid>
       </Grid>
