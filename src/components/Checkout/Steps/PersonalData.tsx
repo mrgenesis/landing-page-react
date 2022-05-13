@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import { checkoutContext } from '../checkoutContext';
 import { PersonalDataPropertiesNames, Steps } from '../interfaces';
-import { storageReference } from '../../../services/firebase';
+import { getStorageReference } from '../../../services/firebase';
 import { uploadBytes } from 'firebase/storage';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import FileDownloadDoneIcon from '@mui/icons-material/FileDownloadDone';
@@ -20,7 +20,8 @@ export default function PersonalData({ handleInput, handleFocus }: { handleInput
 
   const handleFile = (e: any) => {
     const file = e.target.files[0];
-    console.log(e.target.files)
+    const storageReference = getStorageReference(localStorage.getItem('docId') as string);
+    
     if (file) {
       uploadBytes(storageReference, file)
       .then(() => {
@@ -157,7 +158,7 @@ export default function PersonalData({ handleInput, handleFocus }: { handleInput
           />
         </Grid>
         <Grid item xs={12} sm={12}>          
-          <Button variant='contained' fullWidth component="label" startIcon={(uploaded) ? <FileDownloadDoneIcon /> : <FileUploadIcon />} color={(uploaded) ? 'inherit' : "primary"}>
+          <Button variant='contained' fullWidth disabled={uploaded} component="label" startIcon={(uploaded) ? <FileDownloadDoneIcon /> : <FileUploadIcon />} color={(uploaded) ? 'inherit' : "primary"}>
             {" "}
             {(uploaded) ? `Documento enviado` : `envie a cópia do RG ou CNH`}
             <input type="file" hidden accept='image/*'  onChange={handleFile} />
