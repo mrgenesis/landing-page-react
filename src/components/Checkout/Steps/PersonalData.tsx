@@ -15,7 +15,7 @@ export default function PersonalData({ handleInput, handleFocus }: { handleInput
   const [uploaded, setUploaded] = React.useState(Boolean(localStorage.getItem('uploaded')));
   
   React.useEffect(() => {
-    dispachCheckout({ type: 'SET_STEP', payload: { step: Steps.personalData }});   
+    dispachCheckout({ type: 'SET_STEP', payload: { step: Steps.personalData }}); // eslint-disable-next-line  
   }, []);
 
   const handleFile = (e: any) => {
