@@ -17,7 +17,7 @@ export default function checkoutReducer(state: CheckoutState, action: any) {
           [state.step]: { 
             ...state.dataOfValidation[state.step],
             [state.currentFocus]: { 
-              ...state.dataOfValidation?.[state.step], 
+              ...state.dataOfValidation?.[state.step]?.[state.currentFocus], 
               ...validated 
             } 
           }          
